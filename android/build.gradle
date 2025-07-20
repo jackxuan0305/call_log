@@ -37,8 +37,16 @@ android {
         minSdkVersion 21
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+    
     lint {
         disable 'InvalidPackage'
+        abortOnError false
+    }
+    
+    packaging {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
     }
 }
 

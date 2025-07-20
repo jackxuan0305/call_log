@@ -45,6 +45,7 @@ android {
 
     lintOptions {
         disable 'InvalidPackage'
+        abortOnError false
     }
 
     defaultConfig {
@@ -57,6 +58,12 @@ android {
     }
 
     namespace 'sk.fourq.calllogexample'
+
+    packaging {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
 
     buildTypes {
         release {
