@@ -21,11 +21,31 @@ rootProject.allprojects {
 
 apply plugin: "com.android.library"
 
-// 添加这个配置来解决 Android 35 的 jlink 问题
+// 完全禁用 JDK 图像转换的解决方案
 gradle.projectsEvaluated {
     tasks.withType(JavaCompile) {
         options.compilerArgs += ["--add-exports", "java.base/sun.nio.ch=ALL-UNNAMED"]
         options.compilerArgs += ["--add-opens", "java.base/java.lang=ALL-UNNAMED"]
+        // 禁用模块路径
+        options.compilerArgs += ["-Xbootclasspath/a:${System.getProperty('java.home')}/lib/rt.jar"]
+    }
+}
+
+// 更彻底的 JDK 图像禁用
+project.afterEvaluate {
+    // 禁用所有 JDK 图像相关配置
+    configurations.all { config ->
+        if (config.name.contains('androidJdkImage') || config.name.contains('JdkImage')) {
+            config.setCanBeResolved(false)
+            config.setCanBeConsumed(false)
+        }
+    }
+    
+    // 移除所有与 JDK 图像相关的任务
+    tasks.configureEach { task ->
+        if (task.name.contains('JdkImage') || task.name.contains('jdkImage')) {
+            task.enabled = false
+        }
     }
 }
 
