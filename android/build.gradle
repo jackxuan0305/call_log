@@ -21,6 +21,14 @@ rootProject.allprojects {
 
 apply plugin: "com.android.library"
 
+// 添加这个配置来解决 Android 35 的 jlink 问题
+gradle.projectsEvaluated {
+    tasks.withType(JavaCompile) {
+        options.compilerArgs += ["--add-exports", "java.base/sun.nio.ch=ALL-UNNAMED"]
+        options.compilerArgs += ["--add-opens", "java.base/java.lang=ALL-UNNAMED"]
+    }
+}
+
 android {
     compileSdk 35
     namespace "sk.fourq.calllog"
