@@ -48,12 +48,20 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
+    
+    // 添加配置来解决 Android 35 的 jlink 问题
+    configurations.all {
+        resolutionStrategy {
+            force 'androidx.core:core:1.12.0'
+            force 'androidx.annotation:annotation:1.7.1'
+        }
+    }
 }
 
 dependencies {
-    implementation 'org.apache.commons:commons-lang3:3.6'
-    implementation 'androidx.annotation:annotation:1.1.0'
-    implementation 'androidx.core:core:1.1.0'
+    implementation 'org.apache.commons:commons-lang3:3.14.0'
+    implementation 'androidx.annotation:annotation:1.7.1'
+    implementation 'androidx.core:core:1.12.0'
     testImplementation 'junit:junit:4.13.2'
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.4'
     implementation 'com.google.code.gson:gson:2.10.1'
